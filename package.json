@@ -1,0 +1,12 @@
+{
+  "name": "stokira",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Stokira local-first inventory prototype with a Node.js backend.",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "node backend/server.js",
+    "start": "node backend/server.js",
+    "check": "node --check backend/server.js && node --check backend/repositories/local-store.js && node --check backend/services/stock-service.js && node --check backend/seed.js"
+  }
+}

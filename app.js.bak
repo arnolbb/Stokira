@@ -1,0 +1,1432 @@
+﻿const STORAGE_KEY = "stokira.local.v1";
+
+const icons = {
+  dashboard: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>',
+  barang: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>',
+  "stok-masuk": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m8 11 4 4 4-4"/><path d="M8 5H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4"/></svg>',
+  "stok-keluar": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="m8 7 4-4 4 4"/><path d="M8 5H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4"/></svg>',
+  "riwayat-stok": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>',
+  "stok-menipis": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
+  laporan: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 13H8"/><path d="M16 17H8"/><path d="M16 9H8"/></svg>',
+  pengguna: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  pengaturan: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>',
+  edit: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>',
+  ban: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>',
+  plus: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>',
+  download: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>',
+  logout: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>',
+  brand: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>',
+  emptyBox: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>',
+  check: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+  search: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>',
+};
+
+const seed = {
+  session: null,
+  users: [
+    { id: "USR-001", name: "Owner", email: "owner@example.com", role: "owner", status: "active" },
+    { id: "USR-002", name: "Admin Gudang", email: "admin@example.com", role: "admin", status: "active" },
+    { id: "USR-003", name: "Staff Gudang", email: "staff@example.com", role: "staff", status: "active" }
+  ],
+  categories: [
+    { id: "CAT-001", name: "Mesin", status: "active" },
+    { id: "CAT-002", name: "Filter", status: "active" },
+    { id: "CAT-003", name: "Aksesoris", status: "active" },
+    { id: "CAT-004", name: "Sparepart", status: "active" },
+    { id: "CAT-005", name: "Tools", status: "active" }
+  ],
+  products: [
+    {
+      id: "PRD-001",
+      code: "WP-RO600",
+      name: "RO 600G",
+      category: "Mesin",
+      unit: "unit",
+      stock: 10,
+      minStock: 3,
+      location: "Rak A1",
+      purchasePrice: 2500000,
+      sellingPrice: 3250000,
+      notes: "Unit mesin utama",
+      status: "active",
+      createdAt: "2026-06-19T08:00:00+07:00",
+      updatedAt: "2026-06-19T08:00:00+07:00"
+    },
+    {
+      id: "PRD-002",
+      code: "FLT-COMP",
+      name: "Filter Composite",
+      category: "Filter",
+      unit: "pcs",
+      stock: 25,
+      minStock: 10,
+      location: "Rak B1",
+      purchasePrice: 65000,
+      sellingPrice: 95000,
+      notes: "Fast moving",
+      status: "active",
+      createdAt: "2026-06-19T08:00:00+07:00",
+      updatedAt: "2026-06-19T08:00:00+07:00"
+    },
+    {
+      id: "PRD-003",
+      code: "HOSE-14",
+      name: "Selang 1/4 Inch",
+      category: "Aksesoris",
+      unit: "meter",
+      stock: 50,
+      minStock: 15,
+      location: "Rak C1",
+      purchasePrice: 4500,
+      sellingPrice: 8500,
+      notes: "",
+      status: "active",
+      createdAt: "2026-06-19T08:00:00+07:00",
+      updatedAt: "2026-06-19T08:00:00+07:00"
+    },
+    {
+      id: "PRD-004",
+      code: "FAUCET-01",
+      name: "Keran RO",
+      category: "Aksesoris",
+      unit: "pcs",
+      stock: 12,
+      minStock: 5,
+      location: "Rak C2",
+      purchasePrice: 55000,
+      sellingPrice: 85000,
+      notes: "",
+      status: "active",
+      createdAt: "2026-06-19T08:00:00+07:00",
+      updatedAt: "2026-06-19T08:00:00+07:00"
+    }
+  ],
+  stockIn: [],
+  stockOut: [],
+  movements: [],
+  settings: {
+    appName: "Stokira",
+    businessName: "Gudang Utama",
+    databaseMode: "local",
+    timezone: "Asia/Jakarta",
+    currency: "IDR"
+  }
+};
+
+const state = loadState();
+let activeRoute = location.hash.replace("#", "") || "dashboard";
+let toastTimer = null;
+
+function loadState() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (!saved) return structuredClone(seed);
+  try {
+    return { ...structuredClone(seed), ...JSON.parse(saved) };
+  } catch {
+    return structuredClone(seed);
+  }
+}
+
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function resetState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(structuredClone(seed)));
+  location.reload();
+}
+
+function nowIso() {
+  return new Date().toISOString();
+}
+
+function today() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function formatDate(value) {
+  if (!value) return "-";
+  return new Intl.DateTimeFormat("id-ID", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  }).format(new Date(value));
+}
+
+function formatMoney(value) {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0
+  }).format(Number(value || 0));
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function uid(prefix) {
+  const date = new Date().toISOString().slice(0, 10).replaceAll("-", "");
+  const random = Math.floor(Math.random() * 9000) + 1000;
+  return `${prefix}-${date}-${random}`;
+}
+
+function currentUser() {
+  return state.users.find((user) => user.id === state.session?.userId) || null;
+}
+
+function canManageProducts() {
+  const role = currentUser()?.role;
+  return role === "owner" || role === "admin";
+}
+
+function canExport() {
+  const role = currentUser()?.role;
+  return role === "owner" || role === "admin";
+}
+
+function productStatus(product) {
+  if (product.status === "inactive") return { label: "Nonaktif", className: "" };
+  if (product.stock === 0) return { label: "Kosong", className: "danger" };
+  if (product.stock <= product.minStock) return { label: "Menipis", className: "warn" };
+  return { label: "Aman", className: "good" };
+}
+
+function activeProducts() {
+  return state.products.filter((product) => product.status === "active");
+}
+
+function stats() {
+  const products = activeProducts();
+  const incomingToday = state.stockIn
+    .filter((item) => item.transactionDate === today())
+    .reduce((sum, item) => sum + Number(item.quantity), 0);
+  const outgoingToday = state.stockOut
+    .filter((item) => item.transactionDate === today())
+    .reduce((sum, item) => sum + Number(item.quantity), 0);
+  return {
+    totalProducts: products.length,
+    totalStock: products.reduce((sum, item) => sum + Number(item.stock), 0),
+    lowStock: products.filter((item) => item.stock <= item.minStock && item.stock > 0).length,
+    emptyStock: products.filter((item) => item.stock === 0).length,
+    incomingToday,
+    outgoingToday
+  };
+}
+
+function showToast(message, type = "success") {
+  clearTimeout(toastTimer);
+  const existing = document.querySelector(".toast");
+  if (existing) existing.remove();
+  const toast = document.createElement("div");
+  toast.className = `toast ${type === "error" ? "error" : ""}`;
+  toast.setAttribute("role", "alert");
+  toast.setAttribute("aria-live", "assertive");
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  toastTimer = setTimeout(() => {
+    toast.classList.add("out");
+    setTimeout(() => toast.remove(), 200);
+  }, 3400);
+}
+
+
+
+function showConfirm(title, description, onConfirm, danger = false) {
+  const html = `
+    <div class="modal-backdrop" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
+      <div class="modal confirm-modal">
+        <div class="confirm-body">
+          <p>${escapeHtml(title)}</p>
+          <span>${escapeHtml(description)}</span>
+        </div>
+        <div class="confirm-actions">
+          <button class="button ghost" data-close-modal>Batal</button>
+          <button class="button ${danger ? "danger" : "primary"}" id="confirmAction">${danger ? "Ya, lanjutkan" : "Konfirmasi"}</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML("beforeend", html);
+  const backdrop = document.body.lastElementChild;
+  backdrop.querySelector("[data-close-modal]").addEventListener("click", () => backdrop.remove());
+  backdrop.querySelector("#confirmAction").addEventListener("click", () => {
+    backdrop.remove();
+    onConfirm();
+  });
+  backdrop.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") backdrop.remove();
+  });
+  backdrop.querySelector("#confirmAction").focus();
+}
+
+function navigate(route) {
+  activeRoute = route;
+  location.hash = route;
+  render();
+}
+
+window.addEventListener("hashchange", () => {
+  activeRoute = location.hash.replace("#", "") || "dashboard";
+  render();
+});
+
+function pageShell(title, description, content, actions = "") {
+  return `
+    <div class="topbar">
+      <div>
+        <p class="page-kicker">Local mode</p>
+        <h1 class="page-title">${title}</h1>
+        <p class="page-desc">${description}</p>
+      </div>
+      <div class="toolbar">${actions}</div>
+    </div>
+    ${content}
+  `;
+}
+
+function renderLogin() {
+  return `
+    <main class="login-wrap">
+      <section class="login-visual" aria-hidden="true">
+        <div class="brand-mark">
+          <div class="brand-logo">S</div>
+          <div>
+            <p class="brand-title">Stokira</p>
+            <p class="brand-subtitle" style="color: rgba(255,255,255,.82)">Inventory control prototype</p>
+          </div>
+        </div>
+        <div>
+          <h1>Stok gudang yang rapi sebelum masuk Supabase.</h1>
+          <p>Prototype lokal ini dipakai untuk memfinalkan alur kerja, validasi, dan pengalaman admin sebelum database production dihubungkan.</p>
+        </div>
+        <span class="mode-pill" style="background: rgba(255,255,255,.14); color: #fff; border-color: rgba(255,255,255,.32)">Database mode: local</span>
+      </section>
+      <section class="login-card">
+        <form class="login-card-inner" id="loginForm" aria-label="Login Stokira">
+          <div>
+            <p class="page-kicker">Masuk aplikasi</p>
+            <h2 class="page-title" style="font-size: 32px">Login Stokira</h2>
+            <p class="page-desc">Gunakan akun seed untuk mencoba hak akses owner, admin, atau staff.</p>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input class="input" id="email" name="email" type="email" value="admin@example.com" required />
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input class="input" id="password" name="password" type="password" value="password" required />
+          </div>
+          <button class="button primary" type="submit">Masuk</button>
+          <div class="login-seeds" role="note">
+            <strong>Akun demo</strong>
+            <span>owner@example.com, admin@example.com, staff@example.com</span>
+            <span>Password demo: password</span>
+          </div>
+        </form>
+      </section>
+    </main>
+  `;
+}
+
+function appShell(content) {
+  const user = currentUser();
+  const menu = [
+    ["dashboard", "Dashboard"],
+    ["barang", "Data Barang"],
+    ["stok-masuk", "Stok Masuk"],
+    ["stok-keluar", "Stok Keluar"],
+    ["riwayat-stok", "Riwayat Stok"],
+    ["stok-menipis", "Stok Menipis"],
+    ["laporan", "Laporan"],
+    ["pengguna", "Pengguna"],
+    ["pengaturan", "Pengaturan"]
+  ];
+  return `
+    <div class="app-shell">
+      <aside class="sidebar" role="navigation" aria-label="Menu utama">
+        <div class="brand">
+          <div class="brand-mark">
+            <div class="brand-logo">S</div>
+            <div>
+              <p class="brand-title">Stokira</p>
+              <p class="brand-subtitle">${escapeHtml(state.settings.businessName)}</p>
+            </div>
+          </div>
+        </div>
+        <nav class="nav">
+          ${menu
+            .map(
+              ([route, label]) => `
+                <button class="nav-button ${activeRoute === route ? "active" : ""}" data-route="${route}" aria-current="${activeRoute === route ? "page" : "false"}">
+                  <span class="nav-icon">${icons[route] || ""}</span>
+                  <span>${label}</span>
+                </button>
+              `
+            )
+            .join("")}
+        </nav>
+        <div class="sidebar-footer">
+          <div class="user-card">
+            <span class="user-name">${escapeHtml(user.name)}</span>
+            <span class="user-role">${escapeHtml(user.role)} access</span>
+            <button class="button ghost" id="logoutButton" type="button">${icons.logout} Logout</button>
+          </div>
+        </div>
+      </aside>
+      <main class="main" role="main">${content}</main>
+    </div>
+  `;
+}
+
+function renderDashboard() {
+  const s = stats();
+  const lowProducts = activeProducts()
+    .filter((product) => product.stock <= product.minStock)
+    .sort((a, b) => a.stock - b.stock)
+    .slice(0, 6);
+  const latestMovements = [...state.movements].reverse().slice(0, 7);
+  const metrics = [
+    ["Total barang", s.totalProducts, "Jenis barang aktif", "accent"],
+    ["Total stok", s.totalStock, "Quantity seluruh gudang", ""],
+    ["Stok menipis", s.lowStock, "Butuh restock", "warn"],
+    ["Stok kosong", s.emptyStock, "Prioritas tertinggi", "danger"],
+    ["Masuk hari ini", s.incomingToday, "Quantity diterima", "accent"],
+    ["Keluar hari ini", s.outgoingToday, "Quantity digunakan", ""]
+  ];
+  return pageShell(
+    "Dashboard stok",
+    "Pantau kondisi gudang, aktivitas hari ini, dan barang yang perlu segera direstock.",
+    `
+      <section class="grid metric-grid" aria-label="Ringkasan stok">
+        ${metrics
+          .map(
+            ([label, value, note, tone]) => `
+              <article class="panel metric ${tone}">
+                <p class="metric-label">${label}</p>
+                <p class="metric-value">${value}</p>
+                <span class="metric-note">${note}</span>
+              </article>
+            `
+          )
+          .join("")}
+      </section>
+      <section class="grid content-grid">
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Barang perlu restock</h2>
+              <p class="panel-subtitle">Diambil dari stok yang kurang dari atau sama dengan minimal stok.</p>
+            </div>
+            <button class="button" data-route="stok-menipis">Lihat semua</button>
+          </div>
+          <div class="panel-body">
+            ${
+              lowProducts.length
+                ? `<div class="list">${lowProducts.map(renderProductListItem).join("")}</div>`
+                : `<div class="empty"><div class="empty-icon">${icons.check}</div>Semua stok masih berada di atas batas minimal.</div>`
+            }
+          </div>
+        </article>
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Transaksi terbaru</h2>
+              <p class="panel-subtitle">Audit singkat perubahan stok terakhir.</p>
+            </div>
+          </div>
+          <div class="panel-body">
+            ${
+              latestMovements.length
+                ? `<div class="list">${latestMovements.map(renderMovementListItem).join("")}</div>`
+                : `<div class="empty"><div class="empty-icon">${icons.emptyBox}</div>Belum ada transaksi stok.<div class="empty-action"><button class="button" data-route="stok-masuk">${icons.plus} Tambah transaksi pertama</button></div></div>`
+            }
+          </div>
+        </article>
+      </section>
+    `
+  );
+}
+
+function renderProductListItem(product) {
+  const status = productStatus(product);
+  return `
+    <div class="list-item">
+      <div>
+        <p class="list-title">${escapeHtml(product.name)}</p>
+        <p class="list-meta">${escapeHtml(product.code)} / ${escapeHtml(product.location)} / Min ${product.minStock}</p>
+      </div>
+      <div class="list-end">
+        <span class="badge ${status.className}">${status.label}</span>
+        <p class="list-meta">${product.stock} ${escapeHtml(product.unit)}</p>
+      </div>
+    </div>
+  `;
+}
+
+function renderMovementListItem(item) {
+  const tone = item.type === "OUT" ? "info" : item.type === "IN" ? "good" : "warn";
+  return `
+    <div class="list-item">
+      <div>
+        <p class="list-title">${escapeHtml(item.productName)}</p>
+        <p class="list-meta">${formatDate(item.movementDate)} / ${escapeHtml(item.notes || "-")}</p>
+      </div>
+      <div class="list-end">
+        <span class="badge ${tone}">${item.type}</span>
+        <p class="list-meta">${item.stockBefore} ke ${item.stockAfter}</p>
+      </div>
+    </div>
+  `;
+}
+
+function productFiltersHtml() {
+  return `
+    <div class="filters">
+      <input class="input" id="productSearch" placeholder="Cari kode atau nama barang" aria-label="Cari barang" style="max-width: 320px" />
+      <select class="select" id="categoryFilter" aria-label="Filter kategori" style="max-width: 220px">
+        <option value="">Semua kategori</option>
+        ${state.categories.map((category) => `<option value="${escapeHtml(category.name)}">${escapeHtml(category.name)}</option>`).join("")}
+      </select>
+      <select class="select" id="stockFilter" aria-label="Filter status stok" style="max-width: 200px">
+        <option value="">Semua status</option>
+        <option value="safe">Aman</option>
+        <option value="low">Menipis</option>
+        <option value="empty">Kosong</option>
+        <option value="inactive">Nonaktif</option>
+      </select>
+    </div>
+  `;
+}
+
+function filteredProducts() {
+  const search = document.querySelector("#productSearch")?.value.toLowerCase() || "";
+  const category = document.querySelector("#categoryFilter")?.value || "";
+  const stockFilter = document.querySelector("#stockFilter")?.value || "";
+  return state.products.filter((product) => {
+    const matchesSearch = `${product.code} ${product.name}`.toLowerCase().includes(search);
+    const matchesCategory = !category || product.category === category;
+    let matchesStock = true;
+    if (stockFilter === "safe") matchesStock = product.status === "active" && product.stock > product.minStock;
+    if (stockFilter === "low") matchesStock = product.status === "active" && product.stock <= product.minStock && product.stock > 0;
+    if (stockFilter === "empty") matchesStock = product.status === "active" && product.stock === 0;
+    if (stockFilter === "inactive") matchesStock = product.status === "inactive";
+    return matchesSearch && matchesCategory && matchesStock;
+  });
+}
+
+function renderProducts() {
+  const actions = canManageProducts()
+    ? `<button class="button primary" id="addProductButton">${icons.plus} Tambah barang</button>`
+    : "";
+  return pageShell(
+    "Data barang",
+    "Kelola master barang, kategori, stok minimal, harga, lokasi, dan status aktif barang.",
+    `
+      <article class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">Master barang</h2>
+            <p class="panel-subtitle">Stok tidak diedit langsung. Gunakan stok masuk, stok keluar, atau adjustment nanti.</p>
+          </div>
+        </div>
+        <div class="panel-body">
+          ${productFiltersHtml()}
+          <div id="productsTable"></div>
+        </div>
+      </article>
+    `,
+    actions
+  );
+}
+
+function renderProductsTable() {
+  const rows = filteredProducts();
+  const target = document.querySelector("#productsTable");
+  if (!target) return;
+  if (!rows.length) {
+    target.innerHTML = `<div class="empty"><div class="empty-icon">${icons.search}</div>Belum ada barang yang cocok dengan filter.</div>`;
+    return;
+  }
+  target.innerHTML = `
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Kode</th>
+            <th>Nama barang</th>
+            <th>Kategori</th>
+            <th>Satuan</th>
+            <th>Stok</th>
+            <th>Min</th>
+            <th>Lokasi</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows
+            .map((product) => {
+              const status = productStatus(product);
+              return `
+                <tr>
+                  <td><strong>${escapeHtml(product.code)}</strong></td>
+                  <td>${escapeHtml(product.name)}</td>
+                  <td>${escapeHtml(product.category)}</td>
+                  <td>${escapeHtml(product.unit)}</td>
+                  <td>${product.stock}</td>
+                  <td>${product.minStock}</td>
+                  <td>${escapeHtml(product.location)}</td>
+                  <td><span class="badge ${status.className}">${status.label}</span></td>
+                  <td>
+                    <div class="row-actions">
+                      <button class="icon-button" title="Edit barang" data-edit-product="${product.id}" aria-label="Edit ${escapeHtml(product.name)}">${icons.edit}</button>
+                      <button class="icon-button" title="Nonaktifkan" data-inactive-product="${product.id}" ${product.status === "inactive" ? "disabled" : ""} aria-label="Nonaktifkan ${escapeHtml(product.name)}">${icons.ban}</button>
+                    </div>
+                  </td>
+                </tr>
+              `;
+            })
+            .join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function productForm(product = null) {
+  const isEdit = Boolean(product);
+  const data = product || {
+    code: "",
+    name: "",
+    category: "Mesin",
+    unit: "pcs",
+    stock: 0,
+    minStock: 0,
+    location: "",
+    purchasePrice: 0,
+    sellingPrice: 0,
+    notes: "",
+    status: "active"
+  };
+  return `
+    <div class="modal-backdrop" role="dialog" aria-modal="true" aria-label="${isEdit ? 'Edit barang' : 'Tambah barang'}">
+      <div class="modal">
+        <form id="productForm">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">${isEdit ? "Edit barang" : "Tambah barang"}</h2>
+              <p class="panel-subtitle">${isEdit ? "Stok tidak diubah langsung dari form master." : "Stok awal akan dicatat sebagai movement INITIAL."}</p>
+            </div>
+            <button class="button ghost" type="button" data-close-modal>Tutup</button>
+          </div>
+          <div class="panel-body form-grid">
+            <input type="hidden" name="id" value="${escapeHtml(product?.id || "")}" />
+            <div class="field">
+              <label for="pf-code">Kode barang</label>
+              <input class="input" id="pf-code" name="code" value="${escapeHtml(data.code)}" required />
+            </div>
+            <div class="field">
+              <label for="pf-name">Nama barang</label>
+              <input class="input" id="pf-name" name="name" value="${escapeHtml(data.name)}" required />
+            </div>
+            <div class="field">
+              <label for="pf-cat">Kategori</label>
+              <select class="select" id="pf-cat" name="category">
+                ${state.categories.map((category) => `<option value="${escapeHtml(category.name)}" ${data.category === category.name ? "selected" : ""}>${escapeHtml(category.name)}</option>`).join("")}
+              </select>
+            </div>
+            <div class="field">
+              <label for="pf-unit">Satuan</label>
+              <input class="input" id="pf-unit" name="unit" value="${escapeHtml(data.unit)}" required />
+            </div>
+            <div class="field">
+              <label for="pf-stock">${isEdit ? "Stok saat ini" : "Stok awal"}</label>
+              <input class="input" id="pf-stock" name="stock" type="number" min="0" value="${Number(data.stock)}" ${isEdit ? "readonly" : ""} />
+            </div>
+            <div class="field">
+              <label for="pf-min">Minimal stok</label>
+              <input class="input" id="pf-min" name="minStock" type="number" min="0" value="${Number(data.minStock)}" required />
+            </div>
+            <div class="field">
+              <label for="pf-buy">Harga beli</label>
+              <input class="input" id="pf-buy" name="purchasePrice" type="number" min="0" value="${Number(data.purchasePrice || 0)}" />
+            </div>
+            <div class="field">
+              <label for="pf-sell">Harga jual</label>
+              <input class="input" id="pf-sell" name="sellingPrice" type="number" min="0" value="${Number(data.sellingPrice || 0)}" />
+            </div>
+            <div class="field">
+              <label for="pf-loc">Lokasi</label>
+              <input class="input" id="pf-loc" name="location" value="${escapeHtml(data.location)}" />
+            </div>
+            <div class="field">
+              <label for="pf-status">Status</label>
+              <select class="select" id="pf-status" name="status">
+                <option value="active" ${data.status === "active" ? "selected" : ""}>Active</option>
+                <option value="inactive" ${data.status === "inactive" ? "selected" : ""}>Inactive</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="pf-notes">Catatan</label>
+              <textarea class="textarea" id="pf-notes" name="notes">${escapeHtml(data.notes)}</textarea>
+            </div>
+          </div>
+          <div class="panel-header" style="border-top: 1px solid var(--line); border-bottom: 0">
+            <span class="panel-subtitle">Validasi kode unik dan nilai angka dilakukan di local service.</span>
+            <button class="button primary" type="submit">Simpan barang</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
+}
+
+function saveProduct(form) {
+  const data = Object.fromEntries(new FormData(form).entries());
+  const isEdit = Boolean(data.id);
+  const stock = Number(data.stock || 0);
+  const minStock = Number(data.minStock || 0);
+  if (stock < 0 || minStock < 0 || Number(data.purchasePrice || 0) < 0 || Number(data.sellingPrice || 0) < 0) {
+    showToast("Nilai stok dan harga tidak boleh negatif.", "error");
+    return;
+  }
+  const duplicate = state.products.find((product) => product.code.toLowerCase() === data.code.toLowerCase() && product.id !== data.id);
+  if (duplicate) {
+    showToast("Kode barang sudah digunakan.", "error");
+    return;
+  }
+  if (isEdit) {
+    const product = state.products.find((item) => item.id === data.id);
+    Object.assign(product, {
+      code: data.code.trim(),
+      name: data.name.trim(),
+      category: data.category,
+      unit: data.unit.trim(),
+      minStock,
+      location: data.location.trim(),
+      purchasePrice: Number(data.purchasePrice || 0),
+      sellingPrice: Number(data.sellingPrice || 0),
+      notes: data.notes.trim(),
+      status: data.status,
+      updatedAt: nowIso()
+    });
+    showToast("Data barang berhasil diperbarui.");
+  } else {
+    const product = {
+      id: uid("PRD"),
+      code: data.code.trim(),
+      name: data.name.trim(),
+      category: data.category,
+      unit: data.unit.trim(),
+      stock,
+      minStock,
+      location: data.location.trim(),
+      purchasePrice: Number(data.purchasePrice || 0),
+      sellingPrice: Number(data.sellingPrice || 0),
+      notes: data.notes.trim(),
+      status: data.status,
+      createdAt: nowIso(),
+      updatedAt: nowIso()
+    };
+    state.products.push(product);
+    if (stock > 0) {
+      state.movements.push({
+        id: uid("MOV"),
+        movementDate: today(),
+        productId: product.id,
+        productCode: product.code,
+        productName: product.name,
+        type: "INITIAL",
+        quantity: stock,
+        stockBefore: 0,
+        stockAfter: stock,
+        refId: product.id,
+        refType: "product",
+        notes: "Stok awal barang",
+        createdBy: currentUser().id,
+        createdAt: nowIso()
+      });
+    }
+    showToast("Barang baru berhasil ditambahkan.");
+  }
+  saveState();
+  closeModal();
+  render();
+}
+
+function closeModal() {
+  document.querySelector(".modal-backdrop")?.remove();
+}
+
+function stockForm(type) {
+  const isIn = type === "in";
+  return pageShell(
+    isIn ? "Stok masuk" : "Stok keluar",
+    isIn
+      ? "Catat barang yang diterima agar stok otomatis bertambah dan masuk ke riwayat."
+      : "Catat barang keluar, penerima, dan keperluan tanpa mengizinkan stok menjadi minus.",
+    `
+      <article class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">${isIn ? "Form barang masuk" : "Form barang keluar"}</h2>
+            <p class="panel-subtitle">Transaksi disimpan ke data lokal dan membuat stock movement otomatis.</p>
+          </div>
+        </div>
+        <form class="panel-body form-grid" id="${isIn ? "stockInForm" : "stockOutForm"}" aria-label="${isIn ? 'Form barang masuk' : 'Form barang keluar'}">
+          <div class="field">
+            <label for="sf-date">Tanggal</label>
+            <input class="input" id="sf-date" type="date" name="transactionDate" value="${today()}" required />
+          </div>
+          <div class="field">
+            <label for="sf-product">Produk</label>
+            <select class="select" id="sf-product" name="productId" required>
+              <option value="">Pilih produk</option>
+              ${activeProducts().map((product) => `<option value="${product.id}">${escapeHtml(product.code)} - ${escapeHtml(product.name)} (${product.stock} ${escapeHtml(product.unit)})</option>`).join("")}
+            </select>
+          </div>
+          <div class="field">
+            <label>Jumlah</label>
+            <input class="input" type="number" name="quantity" min="1" value="1" required />
+          </div>
+          ${
+            isIn
+              ? `
+                <div class="field">
+                  <label>Supplier</label>
+                  <input class="input" name="supplierName" placeholder="Nama supplier" />
+                </div>
+                <div class="field">
+                  <label>Nomor invoice/surat jalan</label>
+                  <input class="input" name="invoiceNumber" placeholder="INV-001" />
+                </div>
+              `
+              : `
+                <div class="field">
+                  <label>Penerima</label>
+                  <input class="input" name="recipient" placeholder="Nama penerima" />
+                </div>
+                <div class="field">
+                  <label>Keperluan</label>
+                  <select class="select" name="purpose" required>
+                    <option value="">Pilih keperluan</option>
+                    <option>Penjualan</option>
+                    <option>Instalasi</option>
+                    <option>Maintenance</option>
+                    <option>Retur ke supplier</option>
+                    <option>Rusak</option>
+                    <option>Sampel</option>
+                    <option>Pemakaian internal</option>
+                    <option>Lainnya</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Nomor referensi</label>
+                  <input class="input" name="referenceNumber" placeholder="JOB-001" />
+                </div>
+              `
+          }
+          <div class="field full">
+            <label>Catatan</label>
+            <textarea class="textarea" name="notes" placeholder="Catatan transaksi"></textarea>
+          </div>
+          <div class="full toolbar">
+            <button class="button primary" type="submit">${isIn ? "Simpan barang masuk" : "Simpan barang keluar"}</button>
+          </div>
+        </form>
+      </article>
+    `
+  );
+}
+
+function createStockIn(form) {
+  const data = Object.fromEntries(new FormData(form).entries());
+  const product = state.products.find((item) => item.id === data.productId && item.status === "active");
+  const quantity = Number(data.quantity || 0);
+  if (!product) return showToast("Produk tidak ditemukan atau sudah tidak aktif.", "error");
+  if (quantity <= 0) return showToast("Jumlah harus lebih dari 0.", "error");
+  const before = product.stock;
+  const after = before + quantity;
+  const transaction = {
+    id: uid("SIN"),
+    transactionDate: data.transactionDate,
+    productId: product.id,
+    productCode: product.code,
+    productName: product.name,
+    quantity,
+    supplierName: data.supplierName.trim(),
+    invoiceNumber: data.invoiceNumber.trim(),
+    notes: data.notes.trim(),
+    createdBy: currentUser().id,
+    createdAt: nowIso()
+  };
+  product.stock = after;
+  product.updatedAt = nowIso();
+  state.stockIn.push(transaction);
+  state.movements.push({
+    id: uid("MOV"),
+    movementDate: data.transactionDate,
+    productId: product.id,
+    productCode: product.code,
+    productName: product.name,
+    type: "IN",
+    quantity,
+    stockBefore: before,
+    stockAfter: after,
+    refId: transaction.id,
+    refType: "stock_in",
+    notes: data.notes.trim() || `Barang masuk dari ${data.supplierName || "supplier"}`,
+    createdBy: currentUser().id,
+    createdAt: nowIso()
+  });
+  saveState();
+  showToast("Barang masuk berhasil disimpan dan stok diperbarui.");
+  form.reset();
+  form.querySelector("[name='transactionDate']").value = today();
+}
+
+function createStockOut(form) {
+  const data = Object.fromEntries(new FormData(form).entries());
+  const product = state.products.find((item) => item.id === data.productId && item.status === "active");
+  const quantity = Number(data.quantity || 0);
+  if (!product) return showToast("Produk tidak ditemukan atau sudah tidak aktif.", "error");
+  if (quantity <= 0) return showToast("Jumlah harus lebih dari 0.", "error");
+  if (quantity > product.stock) return showToast(`Stok tidak mencukupi. Stok tersedia hanya ${product.stock}.`, "error");
+  const before = product.stock;
+  const after = before - quantity;
+  const transaction = {
+    id: uid("SOUT"),
+    transactionDate: data.transactionDate,
+    productId: product.id,
+    productCode: product.code,
+    productName: product.name,
+    quantity,
+    recipient: data.recipient.trim(),
+    purpose: data.purpose,
+    referenceNumber: data.referenceNumber.trim(),
+    notes: data.notes.trim(),
+    createdBy: currentUser().id,
+    createdAt: nowIso()
+  };
+  product.stock = after;
+  product.updatedAt = nowIso();
+  state.stockOut.push(transaction);
+  state.movements.push({
+    id: uid("MOV"),
+    movementDate: data.transactionDate,
+    productId: product.id,
+    productCode: product.code,
+    productName: product.name,
+    type: "OUT",
+    quantity,
+    stockBefore: before,
+    stockAfter: after,
+    refId: transaction.id,
+    refType: "stock_out",
+    notes: data.notes.trim() || `${data.purpose} untuk ${data.recipient || "penerima"}`,
+    createdBy: currentUser().id,
+    createdAt: nowIso()
+  });
+  saveState();
+  showToast("Barang keluar berhasil disimpan dan stok diperbarui.");
+  form.reset();
+  form.querySelector("[name='transactionDate']").value = today();
+}
+
+function renderMovements() {
+  const rows = [...state.movements].reverse();
+  return pageShell(
+    "Riwayat stok",
+    "Audit semua perubahan stok dengan stok sebelum dan stok sesudah.",
+    `
+      <article class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">Stock movements</h2>
+            <p class="panel-subtitle">Setiap transaksi stok wajib terlihat di daftar ini.</p>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="filters">
+            <input class="input" id="movementSearch" placeholder="Cari barang" aria-label="Cari movement" style="max-width: 320px" />
+            <select class="select" id="movementType" aria-label="Filter tipe movement" style="max-width: 220px">
+              <option value="">Semua tipe</option>
+              <option>IN</option>
+              <option>OUT</option>
+              <option>INITIAL</option>
+              <option>ADJUSTMENT</option>
+            </select>
+          </div>
+          <div id="movementsTable">${movementTable(rows)}</div>
+        </div>
+      </article>
+    `
+  );
+}
+
+function movementTable(rows) {
+  if (!rows.length) return `<div class="empty"><div class="empty-icon">${icons.emptyBox}</div>Belum ada riwayat stok.<div class="empty-action"><button class="button" data-route="stok-masuk">${icons.plus} Mulai transaksi pertama</button></div></div>`;
+  return `
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Tanggal</th>
+            <th>Kode</th>
+            <th>Nama barang</th>
+            <th>Tipe</th>
+            <th>Jumlah</th>
+            <th>Sebelum</th>
+            <th>Sesudah</th>
+            <th>Catatan</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows
+            .map(
+              (item) => `
+                <tr>
+                  <td>${formatDate(item.movementDate)}</td>
+                  <td><strong>${escapeHtml(item.productCode)}</strong></td>
+                  <td>${escapeHtml(item.productName)}</td>
+                  <td><span class="badge ${item.type === "OUT" ? "info" : item.type === "IN" ? "good" : "warn"}">${item.type}</span></td>
+                  <td>${item.quantity}</td>
+                  <td>${item.stockBefore}</td>
+                  <td>${item.stockAfter}</td>
+                  <td>${escapeHtml(item.notes || "-")}</td>
+                </tr>
+              `
+            )
+            .join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function filterMovementTable() {
+  const search = document.querySelector("#movementSearch")?.value.toLowerCase() || "";
+  const type = document.querySelector("#movementType")?.value || "";
+  const rows = [...state.movements]
+    .reverse()
+    .filter((item) => `${item.productCode} ${item.productName}`.toLowerCase().includes(search))
+    .filter((item) => !type || item.type === type);
+  const target = document.querySelector("#movementsTable");
+  if (target) {
+    target.innerHTML = movementTable(rows);
+    target.querySelectorAll("[data-route]").forEach((btn) => {
+      btn.addEventListener("click", () => navigate(btn.dataset.route));
+    });
+  }
+}
+
+function renderLowStock() {
+  const rows = activeProducts()
+    .filter((product) => product.stock <= product.minStock)
+    .sort((a, b) => a.stock - b.stock);
+  return pageShell(
+    "Stok menipis",
+    "Daftar barang yang harus diperhatikan sebelum kosong total.",
+    `
+      <article class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">Prioritas restock</h2>
+            <p class="panel-subtitle">Status kosong mendapat prioritas paling tinggi.</p>
+          </div>
+        </div>
+        <div class="panel-body">
+          ${
+            rows.length
+              ? `
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Kode</th>
+                        <th>Nama barang</th>
+                        <th>Stok</th>
+                        <th>Min</th>
+                        <th>Selisih</th>
+                        <th>Status</th>
+                        <th>Lokasi</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${rows
+                        .map((product) => {
+                          const status = productStatus(product);
+                          const restock = Math.max(product.minStock - product.stock, 0);
+                          return `
+                            <tr>
+                              <td><strong>${escapeHtml(product.code)}</strong></td>
+                              <td>${escapeHtml(product.name)}</td>
+                              <td>${product.stock}</td>
+                              <td>${product.minStock}</td>
+                              <td>${restock}</td>
+                              <td><span class="badge ${status.className}">${status.label}</span></td>
+                              <td>${escapeHtml(product.location)}</td>
+                              <td><button class="button" data-route="stok-masuk">${icons["stok-masuk"]} Tambah stok</button></td>
+                            </tr>
+                          `;
+                        })
+                        .join("")}
+                    </tbody>
+                  </table>
+                </div>
+              `
+              : `<div class="empty"><div class="empty-icon">${icons.check}</div>Belum ada barang yang perlu restock. Semua stok aman.</div>`
+          }
+        </div>
+      </article>
+    `
+  );
+}
+
+function renderReports() {
+  const s = stats();
+  const stockValue = activeProducts().reduce((sum, item) => sum + item.stock * Number(item.purchasePrice || 0), 0);
+  const metrics = [
+    ["Barang aktif", s.totalProducts, "Master data"],
+    ["Total quantity", s.totalStock, "Semua stok aktif"],
+    ["Nilai stok beli", formatMoney(stockValue), "Estimasi modal"],
+    ["Transaksi masuk", state.stockIn.length, "Total dokumen"],
+    ["Transaksi keluar", state.stockOut.length, "Total dokumen"]
+  ];
+  return pageShell(
+    "Laporan",
+    "Ringkasan laporan stok akhir, barang masuk, barang keluar, movement, dan stok menipis.",
+    `
+      <section class="grid report-grid" aria-label="Ringkasan laporan">
+        ${metrics
+          .map(
+            ([label, value, note]) => `
+              <article class="panel metric">
+                <p class="metric-label">${label}</p>
+                <p class="metric-value" style="font-size: ${String(value).length > 8 ? "22px" : "30px"}">${value}</p>
+                <span class="metric-note">${note}</span>
+              </article>
+            `
+          )
+          .join("")}
+      </section>
+      <section class="grid content-grid">
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Stok akhir</h2>
+              <p class="panel-subtitle">Bisa diexport sebagai CSV untuk backup ringan.</p>
+            </div>
+            <button class="button primary" id="exportProducts" ${canExport() ? "" : "disabled"}>${icons.download} Export CSV</button>
+          </div>
+          <div class="panel-body" id="reportProductsTable"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Ringkasan operasional</h2>
+              <p class="panel-subtitle">Data lokal selama prototype.</p>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="list">
+              <div class="list-item"><span>Barang masuk hari ini</span><strong>${s.incomingToday}</strong></div>
+              <div class="list-item"><span>Barang keluar hari ini</span><strong>${s.outgoingToday}</strong></div>
+              <div class="list-item"><span>Stok menipis</span><strong>${s.lowStock}</strong></div>
+              <div class="list-item"><span>Stok kosong</span><strong>${s.emptyStock}</strong></div>
+            </div>
+          </div>
+        </article>
+      </section>
+    `
+  );
+}
+
+function renderReportProductsTable() {
+  const target = document.querySelector("#reportProductsTable");
+  if (!target) return;
+  target.innerHTML = `
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Kode</th>
+            <th>Nama</th>
+            <th>Kategori</th>
+            <th>Stok</th>
+            <th>Min</th>
+            <th>Nilai beli</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${activeProducts()
+            .map(
+              (product) => `
+                <tr>
+                  <td><strong>${escapeHtml(product.code)}</strong></td>
+                  <td>${escapeHtml(product.name)}</td>
+                  <td>${escapeHtml(product.category)}</td>
+                  <td>${product.stock}</td>
+                  <td>${product.minStock}</td>
+                  <td>${formatMoney(product.stock * Number(product.purchasePrice || 0))}</td>
+                </tr>
+              `
+            )
+            .join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function exportProductsCsv() {
+  const header = ["code", "name", "category", "unit", "stock", "min_stock", "location", "status"];
+  const rows = state.products.map((product) => [
+    product.code,
+    product.name,
+    product.category,
+    product.unit,
+    product.stock,
+    product.minStock,
+    product.location,
+    product.status
+  ]);
+  const csv = [header, ...rows].map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(",")).join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `stokira-products-${today()}.csv`;
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+
+function renderUsers() {
+  return pageShell(
+    "Pengguna",
+    "Manajemen pengguna sederhana untuk prototype. Role final akan mengikuti Supabase Auth dan tabel profiles.",
+    `
+      <article class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">Akun demo</h2>
+            <p class="panel-subtitle">Data ini hanya dipakai pada local mode.</p>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nama</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${state.users
+                  .map(
+                    (user) => `
+                      <tr>
+                        <td><strong>${escapeHtml(user.name)}</strong></td>
+                        <td>${escapeHtml(user.email)}</td>
+                        <td><span class="badge info">${escapeHtml(user.role)}</span></td>
+                        <td><span class="badge good">${escapeHtml(user.status)}</span></td>
+                      </tr>
+                    `
+                  )
+                  .join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </article>
+    `
+  );
+}
+
+function renderSettings() {
+  return pageShell(
+    "Pengaturan",
+    "Konfigurasi local mode sebelum aplikasi dimigrasikan ke Supabase PostgreSQL.",
+    `
+      <article class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">Mode aplikasi</h2>
+            <p class="panel-subtitle">Data disimpan di browser localStorage untuk prototype awal.</p>
+          </div>
+          <span class="mode-pill">DATABASE_MODE=local</span>
+        </div>
+        <form class="panel-body form-grid" id="settingsForm" aria-label="Form pengaturan">
+          <div class="field">
+            <label for="set-app">Nama aplikasi</label>
+            <input class="input" id="set-app" name="appName" value="${escapeHtml(state.settings.appName)}" />
+          </div>
+          <div class="field">
+            <label for="set-biz">Nama bisnis</label>
+            <input class="input" id="set-biz" name="businessName" value="${escapeHtml(state.settings.businessName)}" />
+          </div>
+          <div class="field">
+            <label for="set-tz">Timezone</label>
+            <input class="input" id="set-tz" name="timezone" value="${escapeHtml(state.settings.timezone)}" />
+          </div>
+          <div class="field">
+            <label for="set-cur">Currency</label>
+            <input class="input" id="set-cur" name="currency" value="${escapeHtml(state.settings.currency)}" />
+          </div>
+          <div class="full toolbar">
+            <button class="button danger" type="button" id="resetData">Reset data lokal</button>
+            <button class="button primary" type="submit">Simpan pengaturan</button>
+          </div>
+        </form>
+      </article>
+    `
+  );
+}
+
+function renderRoute() {
+  if (!currentUser()) return renderLogin();
+  const routes = {
+    dashboard: renderDashboard,
+    barang: renderProducts,
+    "stok-masuk": () => stockForm("in"),
+    "stok-keluar": () => stockForm("out"),
+    "riwayat-stok": renderMovements,
+    "stok-menipis": renderLowStock,
+    laporan: renderReports,
+    pengguna: renderUsers,
+    pengaturan: renderSettings
+  };
+  const view = routes[activeRoute] || renderDashboard;
+  return appShell(view());
+}
+
+function bindEvents() {
+  document.querySelectorAll("[data-route]").forEach((button) => {
+    button.addEventListener("click", () => navigate(button.dataset.route));
+  });
+
+  document.querySelector("#loginForm")?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(event.currentTarget).entries());
+    const user = state.users.find((item) => item.email.toLowerCase() === data.email.toLowerCase() && item.status === "active");
+    if (!user || data.password !== "password") {
+      showToast("Email atau password tidak sesuai.", "error");
+      return;
+    }
+    state.session = { userId: user.id, loginAt: nowIso() };
+    saveState();
+    showToast("Login berhasil.");
+    render();
+  });
+
+  document.querySelector("#logoutButton")?.addEventListener("click", () => {
+    state.session = null;
+    saveState();
+    activeRoute = "dashboard";
+    location.hash = "dashboard";
+    render();
+  });
+
+  document.querySelector("#addProductButton")?.addEventListener("click", () => {
+    document.body.insertAdjacentHTML("beforeend", productForm());
+    bindModalEvents();
+  });
+
+  document.querySelectorAll("[data-edit-product]").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!canManageProducts()) return showToast("Role Anda tidak bisa mengedit barang.", "error");
+      const product = state.products.find((item) => item.id === button.dataset.editProduct);
+      document.body.insertAdjacentHTML("beforeend", productForm(product));
+      bindModalEvents();
+    });
+  });
+
+  document.querySelectorAll("[data-inactive-product]").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!canManageProducts()) return showToast("Role Anda tidak bisa menonaktifkan barang.", "error");
+      const product = state.products.find((item) => item.id === button.dataset.inactiveProduct);
+      showConfirm(
+        "Nonaktifkan " + product.name + "?",
+        "Barang yang dinonaktifkan tidak akan muncul di daftar stok aktif. Aksi ini bisa di-undo dari form edit.",
+        () => {
+          product.status = "inactive";
+          product.updatedAt = nowIso();
+          saveState();
+          showToast("Barang berhasil dinonaktifkan.");
+          render();
+        },
+        true
+      );
+    });
+  });
+
+  ["#productSearch", "#categoryFilter", "#stockFilter"].forEach((selector) => {
+    document.querySelector(selector)?.addEventListener("input", renderProductsTable);
+  });
+
+  document.querySelector("#stockInForm")?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    createStockIn(event.currentTarget);
+  });
+
+  document.querySelector("#stockOutForm")?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    createStockOut(event.currentTarget);
+  });
+
+  ["#movementSearch", "#movementType"].forEach((selector) => {
+    document.querySelector(selector)?.addEventListener("input", filterMovementTable);
+  });
+
+  document.querySelector("#exportProducts")?.addEventListener("click", exportProductsCsv);
+
+  document.querySelector("#settingsForm")?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(event.currentTarget).entries());
+    state.settings = { ...state.settings, ...data };
+    saveState();
+    showToast("Pengaturan berhasil disimpan.");
+    render();
+  });
+
+  document.querySelector("#resetData")?.addEventListener("click", () => {
+    showConfirm(
+      "Reset semua data lokal?",
+      "Semua data barang, transaksi, dan pengaturan akan dikembalikan ke kondisi awal. Aksi ini tidak bisa di-undo.",
+      resetState,
+      true
+    );
+  });
+
+  renderProductsTable();
+  renderReportProductsTable();
+}
+
+function bindModalEvents() {
+  const backdrop = document.querySelector(".modal-backdrop");
+  backdrop?.querySelector("[data-close-modal]")?.addEventListener("click", closeModal);
+  backdrop?.querySelector("#productForm")?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    saveProduct(event.currentTarget);
+  });
+  backdrop?.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeModal();
+  });
+}
+
+function render() {
+  document.querySelector("#app").innerHTML = renderRoute();
+  bindEvents();
+}
+
+render();
+
